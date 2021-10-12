@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var clMain: ConstraintLayout
     private lateinit var rv_viewUsers: RecyclerView
     private lateinit var bt_addUser: Button
+    private lateinit var bt_updDel: Button
 
     private var listOfUsers = arrayListOf<ArrayList<String>>()
 
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         clMain = findViewById(R.id.clMain)
         rv_viewUsers = findViewById(R.id.rv_viewUsers)
         bt_addUser = findViewById(R.id.bt_addUser)
+        bt_updDel = findViewById(R.id.bt_updDel)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +38,10 @@ class MainActivity : AppCompatActivity() {
 
         getUsers()
         bt_addUser.setOnClickListener { newUser() }
+        bt_updDel.setOnClickListener {
+            val intent = Intent(this, UpdateDeleteActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun getUsers() {
@@ -48,9 +54,10 @@ class MainActivity : AppCompatActivity() {
                 response: Response<List<ResultModel.ResultValue>>
             ) {
                 for(User in response.body()!!){
+                    val pk = User.pk.toString()
                     val name = User.name.toString()
                     val location = User.location.toString()
-                    val tempUser = arrayListOf<String>(name, location)
+                    val tempUser = arrayListOf<String>(pk, name, location)
                     listOfUsers.add(tempUser)
                 }
                 addUserToUI(listOfUsers)
@@ -60,30 +67,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(clMain.context, "Connection failed..", Toast.LENGTH_SHORT).show()
                 call.cancel()
             }
-
-//            override fun onResponse(call: Call<List<ResultModel?>?>, response: Response<List<ResultModel?>?>) {
-//                if (response.code() == 200) {
-//                    Log.d("MainActivityAPI", "Fetched Successfully!")
-//                    try {
-//                        Log.d("MainActivityAPI", "Hi ${response.body()}")
-//                        Log.d("MainActivityAPI", "Hi ${response.body()!![0]}")
-//                        var stringToBePritined:String? = "";
-//                        for(User in response.body()!!){
-//                            stringToBePritined = stringToBePritined + User.name+ "\n"+User.location + "\n"+"\n"
-//                        }
-//
-//                    } catch (e: Exception) {
-//                        Log.d("MainActivityAPI", "Try error: $e")
-//                    }
-//                } else {
-//                    Toast.makeText(clMain.context, "Empty API..", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            override fun onFailure(call: Call<List<ResultModel?>?>, t: Throwable) {
-//                Log.d("MainActivityAPI", "Connection failed.. $t")
-//                Toast.makeText(clMain.context, "Connection failed..", Toast.LENGTH_SHORT).show()
-//                call.cancel()
-//            }
         })
     }
 

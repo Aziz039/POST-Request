@@ -47,7 +47,7 @@ class AddUsersActivity : AppCompatActivity() {
             } else {
                 val apiInterface = APIClient().getClient()?.create(APIInterface::class.java)
                 if (apiInterface != null) {
-                    var newUser = ResultModel.ResultValue(ti_name.text.toString(), ti_location.text.toString())
+                    var newUser = ResultModel.ResultValue(0, ti_name.text.toString(), ti_location.text.toString())
                     apiInterface.addUser(newUser).enqueue(object : Callback<ResultModel.ResultValue> {
                         override fun onResponse(
                             call: Call<ResultModel.ResultValue>,

@@ -23,5 +23,9 @@
             android:name=".AddUsersActivity"
             android:exported="true"
             />
+        <activity
+            android:name=".UpdateDeleteActivity"
+            android:exported="true"
+            />
     </application>
 </manifest>
